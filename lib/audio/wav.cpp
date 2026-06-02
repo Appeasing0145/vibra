@@ -68,7 +68,9 @@ void Wav::readWavFileBuffer(std::istream& stream) {
 
   bool data_chunk_found = false;
   bool fmt_chunk_found = false;
-  for (int i = 0; i < kSubchunkLimit && stream.tellg() < header_.file_size - 8;
+  for (int i = 0;
+       i < kSubchunkLimit &&
+       stream.tellg() < static_cast<std::streampos>(header_.file_size + 8);
        i++) {
     char subchunk_id[4];
     stream.read(subchunk_id, 4);

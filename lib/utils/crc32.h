@@ -1,10 +1,11 @@
 #ifndef LIB_UTILS_CRC32_H_
 #define LIB_UTILS_CRC32_H_
 
+#include <cstddef>
 #include <cstdint>
 
 namespace crc32 {
-std::uint32_t crc32(const char* buf, std::size_t len) {
+inline std::uint32_t crc32(const char* buf, std::size_t len) {
   std::uint32_t crc_table[256];
   std::uint32_t crc;
   std::size_t i, j;

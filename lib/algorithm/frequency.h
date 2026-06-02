@@ -23,9 +23,9 @@ class FrequencyPeak {
   inline std::uint32_t corrected_peak_frequency_bin() const {
     return corrected_peak_frequency_bin_;
   }
-  inline double ComputeFrequency() const;
-  inline double ComputeAmplitudePCM() const;
-  inline double ComputeElapsedSeconds() const;
+  double ComputeFrequency() const;
+  double ComputeAmplitudePCM() const;
+  double ComputeElapsedSeconds() const;
 
  private:
   std::uint32_t fft_pass_number_;

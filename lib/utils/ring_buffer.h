@@ -1,6 +1,8 @@
 #ifndef LIB_UTILS_RING_BUFFER_H_
 #define LIB_UTILS_RING_BUFFER_H_
 
+#include <cstddef>
+#include <cstdint>
 #include <vector>
 
 template <typename T>
