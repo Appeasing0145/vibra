@@ -1,6 +1,8 @@
 #ifndef LIB_UTILS_CRC32_H_
 #define LIB_UTILS_CRC32_H_
 
+#include <cstdint>
+
 namespace crc32 {
 std::uint32_t crc32(const char* buf, std::size_t len) {
   std::uint32_t crc_table[256];
@@ -12,7 +14,7 @@ std::uint32_t crc32(const char* buf, std::size_t len) {
     for (j = 0; j < 8; j++)
       crc = crc & 1 ? (crc >> 1) ^ 0xEDB88320UL : crc >> 1;
     crc_table[i] = crc;
-  };
+  }
   crc = 0xFFFFFFFFUL;
 
   while (len--)
