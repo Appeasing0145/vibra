@@ -42,12 +42,13 @@
 
 | Platform | Status | Workflows |
 |--------|--------|--------|
-| **Linux AMD64** | [![linux-amd64-main]][linux-amd64-main] | [build-linux-amd64] |
-| **Linux ARM64** | [![linux-arm64-main]][linux-arm64-main] | [build-linux-arm64] |
-| **MacOS AMD64** | [![macos-amd64-main]][macos-amd64-main] | [build-macos-amd64] |
-| **MacOS ARM64** | [![macos-arm64-main]][macos-arm64-main] | [build-macos-arm64] |
-| **Windows AMD64** | [![windows-amd64-main]][windows-amd64-main] | [build-windows-amd64] |
-| **WebAssembly** | [![webassembly-main]][webassembly-main] | [build-webassembly] |
+| **Code Checks** | [![code-main]][code-main] | [ci-code] |
+| **Linux AMD64** | [![linux-amd64-main]][linux-amd64-main] | [ci-linux-amd64] |
+| **Linux ARM64** | [![linux-arm64-main]][linux-arm64-main] | [ci-linux-arm64] |
+| **MacOS AMD64** | [![macos-amd64-main]][macos-amd64-main] | [ci-macos-amd64] |
+| **MacOS ARM64** | [![macos-arm64-main]][macos-arm64-main] | [ci-macos-arm64] |
+| **Windows AMD64** | [![windows-amd64-main]][windows-amd64-main] | [ci-windows-amd64] |
+| **WebAssembly** | [![webassembly-main]][webassembly-main] | [ci-webassembly] |
 | ***Python*** | *Coming soon...* | - |
 
 ### Building the WebAssembly Version
@@ -96,6 +97,20 @@
     * `make`
     * `sudo make install` (Optional)
       * Installs the libvibra static, shared libraries and the vibra command-line tool.
+
+#### Unit tests
+* Unit tests are built with [GoogleTest](https://github.com/google/googletest), fetched by CMake.
+* Native CI builds release artifacts with `-DBUILD_TESTING=OFF`, then configures a separate test build with `-DBUILD_TESTING=ON`.
+* Run the following commands to build and run unit tests:
+    * `cmake -B build-test -DCMAKE_BUILD_TYPE=Debug -DLIBRARY_ONLY=ON -DBUILD_TESTING=ON`
+    * `cmake --build build-test --target vibra_unit_tests`
+    * `ctest --test-dir build-test --output-on-failure`
+
+#### Code checks
+* Code CI runs `cpplint` and `clang-format`.
+* Run the following commands locally:
+    * `cpplint --recursive lib include tests/algorithm tests/audio tests/utils tests/public_api_test.cpp`
+    * `find include lib tests -path tests/e2e -prune -o \( -name '*.h' -o -name '*.cpp' -o -name '*.cc' -o -name '*.c' \) -print0 | xargs -0 clang-format --dry-run --Werror`
 
 #### Usage
 <details>
@@ -199,20 +214,23 @@ vibra --recognize --file sample.mp3
 
 
 
-[linux-amd64-main]: https://github.com/bayernmuller/vibra/actions/workflows/build-linux-amd64.yaml/badge.svg
-[build-linux-amd64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/build-linux-amd64.yaml
+[code-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-code.yaml/badge.svg
+[ci-code]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-code.yaml
 
-[linux-arm64-main]: https://github.com/bayernmuller/vibra/actions/workflows/build-linux-arm64.yaml/badge.svg
-[build-linux-arm64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/build-linux-arm64.yaml
+[linux-amd64-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-linux-amd64.yaml/badge.svg
+[ci-linux-amd64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-linux-amd64.yaml
 
-[macos-amd64-main]: https://github.com/bayernmuller/vibra/actions/workflows/build-macos-amd64.yaml/badge.svg
-[build-macos-amd64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/build-macos-amd64.yaml
+[linux-arm64-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-linux-arm64.yaml/badge.svg
+[ci-linux-arm64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-linux-arm64.yaml
 
-[macos-arm64-main]: https://github.com/bayernmuller/vibra/actions/workflows/build-macos-arm64.yaml/badge.svg
-[build-macos-arm64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/build-macos-arm64.yaml
+[macos-amd64-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-macos-amd64.yaml/badge.svg
+[ci-macos-amd64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-macos-amd64.yaml
 
-[windows-amd64-main]: https://github.com/bayernmuller/vibra/actions/workflows/build-windows-amd64.yaml/badge.svg
-[build-windows-amd64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/build-windows-amd64.yaml
+[macos-arm64-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-macos-arm64.yaml/badge.svg
+[ci-macos-arm64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-macos-arm64.yaml
 
-[webassembly-main]: https://github.com/bayernmuller/vibra/actions/workflows/build-webassembly.yaml/badge.svg
-[build-webassembly]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/build-webassembly.yaml
+[windows-amd64-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-windows-amd64.yaml/badge.svg
+[ci-windows-amd64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-windows-amd64.yaml
+
+[webassembly-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-webassembly.yaml/badge.svg
+[ci-webassembly]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-webassembly.yaml
