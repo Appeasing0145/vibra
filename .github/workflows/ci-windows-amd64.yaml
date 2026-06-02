@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: vcpkg install curl:x64-windows
 
-      - name: Configure CMake with vcpkg
+      - name: Configure release build with vcpkg
         run: >
           cmake -B build
           -DCMAKE_BUILD_TYPE=Release
@@ -29,7 +29,11 @@ jobs:
         run: cmake --build ${{ github.workspace }}/build --config Release
 
       - name: Configure unit tests
-        run: cmake -B build-test -DCMAKE_BUILD_TYPE=Debug -DLIBRARY_ONLY=ON
+        run: >
+          cmake -B build-test
+          -DCMAKE_BUILD_TYPE=Debug
+          -DLIBRARY_ONLY=ON
+          -DBUILD_TESTING=ON
 
       - name: Build unit tests
         run: cmake --build build-test --target vibra_unit_tests --config Debug

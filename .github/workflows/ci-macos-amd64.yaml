@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure CMake
+      - name: Configure release build
         run: >
           cmake -B build
           -DCMAKE_BUILD_TYPE=Release
@@ -25,7 +25,11 @@ jobs:
         run: cmake --build ${{ github.workspace }}/build --config Release
 
       - name: Configure unit tests
-        run: cmake -B build-test -DCMAKE_BUILD_TYPE=Debug -DLIBRARY_ONLY=ON
+        run: >
+          cmake -B build-test
+          -DCMAKE_BUILD_TYPE=Debug
+          -DLIBRARY_ONLY=ON
+          -DBUILD_TESTING=ON
 
       - name: Build unit tests
         run: cmake --build build-test --target vibra_unit_tests --config Debug
