@@ -21,3 +21,12 @@ jobs:
 
       - name: Check cpplint
         run: cpplint --recursive lib include
+
+      - name: Configure unit tests
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DLIBRARY_ONLY=ON
+
+      - name: Build unit tests
+        run: cmake --build build --target vibra_unit_tests
+
+      - name: Run unit tests
+        run: ctest --test-dir build --output-on-failure
