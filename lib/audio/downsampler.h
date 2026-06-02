@@ -30,6 +30,15 @@ class Downsampler {
   static DownsampleFunc getDownsampleFunc(bool is_signed, std::uint32_t width,
                                           std::uint32_t channels);
 
+  static double readSignedFrameAsMono(const void* src, std::uint32_t frame,
+                                      std::uint32_t width,
+                                      std::uint32_t channels);
+
+  template <typename T>
+  static double readFloatFrameAsMono(const void* src, std::uint32_t frame,
+                                     std::uint32_t width,
+                                     std::uint32_t channels);
+
   static void signedStereoToMono(LowQualityTrack* dst, const void* src,
                                  double downsample_ratio,
                                  std::uint32_t new_sample_count,
