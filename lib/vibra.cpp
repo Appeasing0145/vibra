@@ -1,5 +1,7 @@
 #include "../include/vibra.h"
 
+#include <string>
+
 #include "algorithm/signature_generator.h"
 #include "audio/downsampler.h"
 #include "audio/wav.h"
