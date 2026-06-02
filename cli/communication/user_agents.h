@@ -5,11 +5,12 @@
 // https://github.com/SaswatPadhi/FlashProfileDemo/blob/c1e3f05d09f6443568a606dc0a439d6ebb057ae1/tests/hetero/user_agents.json
 //
 
-static constexpr const char *USER_AGENTS[] = {
+static constexpr const char* USER_AGENTS[] = {
     "Dalvik/2.1.0 (Linux; U; Android 5.0.2; VS980 4G Build/LRX22G)",
     "Dalvik/1.6.0 (Linux; U; Android 4.4.2; SM-T210 Build/KOT49H)",
     "Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-P905V Build/LMY47X)",
-    "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Vodafone Smart Tab 4G Build/KTU84P)",
+    "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Vodafone Smart Tab 4G "
+    "Build/KTU84P)",
     "Dalvik/1.6.0 (Linux; U; Android 4.4.4; SM-G360H Build/KTU84P)",
     "Dalvik/2.1.0 (Linux; U; Android 5.0.2; SM-S920L Build/LRX22G)",
     "Dalvik/2.1.0 (Linux; U; Android 5.0; Fire Pro Build/LRX21M)",
@@ -61,11 +62,13 @@ static constexpr const char *USER_AGENTS[] = {
     "Dalvik/1.6.0 (Linux; U; Android 4.4.4; SM-T561 Build/KTU84P)",
     "Dalvik/1.6.0 (Linux; U; Android 4.2.2; GT-P3110 Build/JDQ39)",
     "Dalvik/2.1.0 (Linux; U; Android 6.0.1; SM-G925T Build/MMB29K)",
-    "Dalvik/1.6.0 (Linux; U; Android 4.4.2; HUAWEI Y221-U22 Build/HUAWEIY221-U22)",
+    "Dalvik/1.6.0 (Linux; U; Android 4.4.2; HUAWEI Y221-U22 "
+    "Build/HUAWEIY221-U22)",
     "Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G530T1 Build/LMY47X)",
     "Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G920I Build/LMY47X)",
     "Dalvik/2.1.0 (Linux; U; Android 5.0; SM-G900F Build/LRX21T)",
-    "Dalvik/2.1.0 (Linux; U; Android 5.1.1; Vodafone Smart ultra 6 Build/LMY47V)",
+    "Dalvik/2.1.0 (Linux; U; Android 5.1.1; Vodafone Smart ultra 6 "
+    "Build/LMY47V)",
     "Dalvik/1.6.0 (Linux; U; Android 4.4.4; XT1080 Build/SU6-7.7)",
     "Dalvik/1.6.0 (Linux; U; Android 4.4.4; ASUS MeMO Pad 7 Build/KTU84P)",
     "Dalvik/1.6.0 (Linux; U; Android 4.4.2; SM-G800F Build/KOT49H)",
@@ -94,7 +97,8 @@ static constexpr const char *USER_AGENTS[] = {
     "Dalvik/2.1.0 (Linux; U; Android 5.0.2; ZTE Blade Q Lux Build/LRX22G)",
     "Dalvik/2.1.0 (Linux; U; Android 6.0.1; SM-G930F Build/MMB29K)",
     "Dalvik/1.6.0 (Linux; U; Android 4.4.2; HTC_PO582 Build/KOT49H)",
-    "Dalvik/2.1.0 (Linux; U; Android 6.0; HUAWEI MT7-TL10 Build/HuaweiMT7-TL10)",
+    "Dalvik/2.1.0 (Linux; U; Android 6.0; HUAWEI MT7-TL10 "
+    "Build/HuaweiMT7-TL10)",
     "Dalvik/2.1.0 (Linux; U; Android 6.0; LG-H811 Build/MRA58K)",
     "Dalvik/1.6.0 (Linux; U; Android 4.4.2; SM-N7505 Build/KOT49H)",
     "Dalvik/2.1.0 (Linux; U; Android 6.0; LG-H815 Build/MRA58K)",
@@ -107,6 +111,7 @@ static constexpr const char *USER_AGENTS[] = {
     "Dalvik/1.6.0 (Linux; U; Android 4.2.2; SM-T217S Build/JDQ39)",
     "Dalvik/1.6.0 (Linux; U; Android 4.4.4; SAMSUNG-SM-N900A Build/KTU84P)"};
 
-constexpr unsigned int USER_AGENTS_SIZE = sizeof(USER_AGENTS) / sizeof(USER_AGENTS[0]);
+constexpr unsigned int USER_AGENTS_SIZE =
+    sizeof(USER_AGENTS) / sizeof(USER_AGENTS[0]);
 
-#endif // CLI_COMMUNICATION_USER_AGENTS_H_
+#endif  // CLI_COMMUNICATION_USER_AGENTS_H_
