@@ -1,0 +1,15 @@
+#include <gtest/gtest.h>
+
+#include <string>
+
+#include "utils/crc32.h"
+
+TEST(Crc32Test, ReturnsKnownChecksum) {
+  const std::string input = "123456789";
+
+  EXPECT_EQ(crc32::crc32(input.data(), input.size()), 0xCBF43926u);
+}
+
+TEST(Crc32Test, ReturnsZeroForEmptyBuffer) {
+  EXPECT_EQ(crc32::crc32("", 0), 0u);
+}
