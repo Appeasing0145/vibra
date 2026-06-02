@@ -8,6 +8,7 @@ cd build || exit 1
 
 emcmake cmake ../.. \
     -DLIBRARY_ONLY=ON \
+    -DBUILD_TESTING=OFF \
     -DCMAKE_INSTALL_PREFIX=/usr/local
 
 make -j

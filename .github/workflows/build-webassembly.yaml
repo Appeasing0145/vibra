@@ -21,6 +21,7 @@ jobs:
         run: >
           emcmake cmake -B ${{ github.workspace }}/build \
             -DLIBRARY_ONLY=ON \
+            -DBUILD_TESTING=OFF \
             -DCMAKE_INSTALL_PREFIX=/usr/local
 
       - name: Build libvibra as WebAssembly Library
