@@ -73,7 +73,8 @@ LowQualityTrack FFmpegWrapper::ConvertToLowQaulityPcm(
   LowQualityTrack pcm;
   pcm.reserve(duration_seconds * LOW_QUALITY_SAMPLE_RATE);
 
-  while ((bytes_read = std::fread(buffer.data(), 1, buffer.size(), pipe)) != 0) {
+  while ((bytes_read = std::fread(buffer.data(), 1, buffer.size(), pipe)) !=
+         0) {
     pcm.insert(pcm.end(), buffer.begin(),
                buffer.begin() + (bytes_read / sizeof(LowQualitySample)));
   }

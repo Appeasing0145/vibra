@@ -54,9 +54,7 @@ class FFT {
     return real_output;
   }
 
-  virtual ~FFT() {
-    kiss_fftr_free(fft_cfg_);
-  }
+  virtual ~FFT() { kiss_fftr_free(fft_cfg_); }
 
  private:
   kiss_fftr_cfg fft_cfg_;
