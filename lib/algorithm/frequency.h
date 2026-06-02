@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+namespace vibra {
+
 enum class FrequencyBand {
   _0_150 = -1,
   _250_520,
@@ -33,5 +35,7 @@ class FrequencyPeak {
   std::uint32_t corrected_peak_frequency_bin_;
   std::uint32_t sample_rate_;
 };
+
+}  // namespace vibra
 
 #endif  // LIB_ALGORITHM_FREQUENCY_H_

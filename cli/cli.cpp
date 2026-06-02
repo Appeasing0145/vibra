@@ -7,6 +7,8 @@
 
 #include "communication/shazam.h"
 
+namespace vibra {
+
 int CLI::Run(int argc, char** argv) {
   args::ArgumentParser parser("");
   parser.SetArgumentSeparations(false, false, true, true);
@@ -109,3 +111,5 @@ Fingerprint* CLI::getFingerprintFromStdin(int chunk_seconds, int sample_rate,
   return vibra_get_fingerprint_from_float_pcm(buffer.data(), bytes, sample_rate,
                                               bits_per_sample, channels);
 }
+
+}  // namespace vibra

@@ -7,29 +7,34 @@
 #include "audio/wav.h"
 #include "utils/ffmpeg.h"
 
+namespace vibra {
+
 constexpr std::uint32_t MAX_DURATION_SECONDS = 12;
 
 Fingerprint* _get_fingerprint_from_wav(const Wav& wav);
 
 Fingerprint* _get_fingerprint_from_low_quality_pcm(const LowQualityTrack& pcm);
 
+}  // namespace vibra
+
 Fingerprint* vibra_get_fingerprint_from_music_file(
     const char* music_file_path) {
   std::string path = music_file_path;
   if (path.size() >= 4 && path.substr(path.size() - 4) == ".wav") {
-    Wav wav = Wav::FromFile(path);
-    return _get_fingerprint_from_wav(wav);
+    vibra::Wav wav = vibra::Wav::FromFile(path);
+    return vibra::_get_fingerprint_from_wav(wav);
   }
 
-  LowQualityTrack pcm = ffmpeg::FFmpegWrapper::ConvertToLowQaulityPcm(
-      path, 0, MAX_DURATION_SECONDS);
-  return _get_fingerprint_from_low_quality_pcm(pcm);
+  vibra::LowQualityTrack pcm =
+      vibra::ffmpeg::FFmpegWrapper::ConvertToLowQaulityPcm(
+          path, 0, vibra::MAX_DURATION_SECONDS);
+  return vibra::_get_fingerprint_from_low_quality_pcm(pcm);
 }
 
 Fingerprint* vibra_get_fingerprint_from_wav_data(const char* raw_wav,
                                                  int wav_data_size) {
-  Wav wav = Wav::FromRawWav(raw_wav, wav_data_size);
-  return _get_fingerprint_from_wav(wav);
+  vibra::Wav wav = vibra::Wav::FromRawWav(raw_wav, wav_data_size);
+  return vibra::_get_fingerprint_from_wav(wav);
 }
 
 Fingerprint* vibra_get_fingerprint_from_signed_pcm(const char* raw_pcm,
@@ -37,9 +42,9 @@ Fingerprint* vibra_get_fingerprint_from_signed_pcm(const char* raw_pcm,
                                                    int sample_rate,
                                                    int sample_width,
                                                    int channel_count) {
-  Wav wav = Wav::FromSignedPCM(raw_pcm, pcm_data_size, sample_rate,
-                               sample_width, channel_count);
-  return _get_fingerprint_from_wav(wav);
+  vibra::Wav wav = vibra::Wav::FromSignedPCM(
+      raw_pcm, pcm_data_size, sample_rate, sample_width, channel_count);
+  return vibra::_get_fingerprint_from_wav(wav);
 }
 
 Fingerprint* vibra_get_fingerprint_from_float_pcm(const char* raw_pcm,
@@ -47,9 +52,9 @@ Fingerprint* vibra_get_fingerprint_from_float_pcm(const char* raw_pcm,
                                                   int sample_rate,
                                                   int sample_width,
                                                   int channel_count) {
-  Wav wav = Wav::FromFloatPCM(raw_pcm, pcm_data_size, sample_rate, sample_width,
-                              channel_count);
-  return _get_fingerprint_from_wav(wav);
+  vibra::Wav wav = vibra::Wav::FromFloatPCM(raw_pcm, pcm_data_size, sample_rate,
+                                            sample_width, channel_count);
+  return vibra::_get_fingerprint_from_wav(wav);
 }
 
 const char* vibra_get_uri_from_fingerprint(Fingerprint* fingerprint) {
@@ -63,6 +68,8 @@ unsigned int vibra_get_sample_ms_from_fingerprint(Fingerprint* fingerprint) {
 void vibra_free_fingerprint(Fingerprint* fingerprint) {
   delete fingerprint;
 }
+
+namespace vibra {
 
 Fingerprint* _get_fingerprint_from_wav(const Wav& wav) {
   LowQualityTrack pcm = Downsampler::GetLowQualityPCM(wav);
@@ -82,3 +89,5 @@ Fingerprint* _get_fingerprint_from_low_quality_pcm(const LowQualityTrack& pcm) {
       signature.num_samples() * 1000 / signature.sample_rate();
   return fingerprint;
 }
+
+}  // namespace vibra

@@ -4,6 +4,10 @@
 
 #include "algorithm/signature.h"
 
+using vibra::FrequencyBand;
+using vibra::FrequencyPeak;
+using vibra::Signature;
+
 TEST(SignatureTest, TracksSampleMetadataAndPeakCounts) {
   Signature signature(16000, 128);
 

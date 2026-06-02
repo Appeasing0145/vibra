@@ -1,6 +1,6 @@
 #include "./cli.h"
 
 int main(int argc, char** argv) {
-  CLI cli;
+  vibra::CLI cli;
   return cli.Run(argc, argv);
 }

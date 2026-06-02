@@ -8,6 +8,8 @@
 #include <kiss_fftr.h>  // NOLINT [include_order]
 #include <algorithm>
 
+namespace vibra {
+
 namespace fft {
 
 template <int INPUT_SIZE>
@@ -62,5 +64,7 @@ class FFT {
   std::array<kiss_fft_cpx, OUTPUT_SIZE> output_data_buffer_;
 };
 }  // namespace fft
+
+}  // namespace vibra
 
 #endif  // LIB_UTILS_FFT_H_

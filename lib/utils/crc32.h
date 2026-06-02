@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace vibra {
+
 namespace crc32 {
 inline std::uint32_t crc32(const char* buf, std::size_t len) {
   std::uint32_t crc_table[256];
@@ -24,5 +26,7 @@ inline std::uint32_t crc32(const char* buf, std::size_t len) {
   return crc ^ 0xFFFFFFFFUL;
 }
 }  // namespace crc32
+
+}  // namespace vibra
 
 #endif  // LIB_UTILS_CRC32_H_

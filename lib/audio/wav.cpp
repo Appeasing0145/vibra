@@ -9,6 +9,8 @@
 #include <sstream>
 #include <string>
 
+namespace vibra {
+
 Wav Wav::FromFile(const std::string& wav_file_path) {
   Wav wav;
   wav.wav_file_path_ = wav_file_path;
@@ -99,3 +101,5 @@ void Wav::readWavFileBuffer(std::istream& stream) {
     throw std::runtime_error("Invalid WAV file");
   }
 }
+
+}  // namespace vibra

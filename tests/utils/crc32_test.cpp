@@ -4,6 +4,8 @@
 
 #include "utils/crc32.h"
 
+namespace crc32 = vibra::crc32;
+
 TEST(Crc32Test, ReturnsKnownChecksum) {
   const std::string input = "123456789";
 

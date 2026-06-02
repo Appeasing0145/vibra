@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+namespace vibra {
+
 FrequencyPeak::FrequencyPeak(std::uint32_t fft_pass_number,
                              std::uint32_t peak_magnitude,
                              std::uint32_t corrected_peak_frequency_bin,
@@ -28,3 +30,5 @@ double FrequencyPeak::ComputeElapsedSeconds() const {
   return static_cast<double>(fft_pass_number_) * 128. /
          static_cast<double>(sample_rate_);
 }
+
+}  // namespace vibra

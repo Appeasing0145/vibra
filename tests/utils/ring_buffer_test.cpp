@@ -4,6 +4,8 @@
 
 #include "utils/ring_buffer.h"
 
+using vibra::RingBuffer;
+
 TEST(RingBufferTest, InitializesWithDefaultValue) {
   RingBuffer<std::int32_t> buffer(3, 7);
 

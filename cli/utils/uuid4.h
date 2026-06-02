@@ -6,6 +6,8 @@
 #include <sstream>
 #include <string>
 
+namespace vibra {
+
 namespace uuid4 {
 std::string generate() {
   std::random_device rd;
@@ -39,5 +41,7 @@ std::string generate() {
   return ss.str();  // RVO. Guaranteed copy elision since C++17
 }
 }  // namespace uuid4
+
+}  // namespace vibra
 
 #endif  // CLI_UTILS_UUID4_H_

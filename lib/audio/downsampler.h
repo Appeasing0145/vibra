@@ -5,6 +5,8 @@
 
 #include <vector>
 
+namespace vibra {
+
 // forward declaration
 class Wav;
 //
@@ -68,5 +70,7 @@ class Downsampler {
                                std::uint32_t new_sample_count,
                                std::uint32_t width, std::uint32_t channels);
 };
+
+}  // namespace vibra
 
 #endif  // LIB_AUDIO_DOWNSAMPLER_H_

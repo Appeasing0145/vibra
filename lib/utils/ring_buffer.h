@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <vector>
 
+namespace vibra {
+
 template <typename T>
 class RingBuffer : private std::vector<T> {
  public:
@@ -48,5 +50,7 @@ void RingBuffer<T>::Append(const T& value) {
   position_ = (position_ + 1) % std::vector<T>::size();
   num_written_++;
 }
+
+}  // namespace vibra
 
 #endif  // LIB_UTILS_RING_BUFFER_H_

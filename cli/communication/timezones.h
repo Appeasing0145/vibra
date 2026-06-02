@@ -1,6 +1,8 @@
 #ifndef CLI_COMMUNICATION_TIMEZONES_H_
 #define CLI_COMMUNICATION_TIMEZONES_H_
 
+namespace vibra {
+
 static constexpr const char* EUROPE_TIMEZONES[] = {
     "Europe/Amsterdam",  "Europe/Andorra",    "Europe/Astrakhan",
     "Europe/Athens",     "Europe/Belgrade",   "Europe/Berlin",
@@ -25,5 +27,7 @@ static constexpr const char* EUROPE_TIMEZONES[] = {
 
 constexpr unsigned int EUROPE_TIMEZONES_SIZE =
     sizeof(EUROPE_TIMEZONES) / sizeof(EUROPE_TIMEZONES[0]);
+
+}  // namespace vibra
 
 #endif  // CLI_COMMUNICATION_TIMEZONES_H_

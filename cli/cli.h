@@ -5,6 +5,8 @@
 
 #include "../include/vibra.h"
 
+namespace vibra {
+
 class CLI {
  public:
   int Run(int argc, char** argv);
@@ -15,5 +17,7 @@ class CLI {
                                        int channels, int bits_per_sample,
                                        bool is_signed);
 };
+
+}  // namespace vibra
 
 #endif  // CLI_CLI_H_

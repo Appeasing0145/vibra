@@ -6,6 +6,8 @@
 #include "utils/fft.h"
 #include "utils/ring_buffer.h"
 
+namespace vibra {
+
 constexpr std::size_t MAX_PEAKS = 255u;
 constexpr std::size_t FFT_BUFFER_CHUNK_SIZE = 2048u;
 
@@ -42,5 +44,7 @@ class SignatureGenerator {
   RingBuffer<decltype(fft_object_)::FFTOutput> fft_outputs_;
   RingBuffer<decltype(fft_object_)::FFTOutput> spread_ffts_output_;
 };
+
+}  // namespace vibra
 
 #endif  // LIB_ALGORITHM_SIGNATURE_GENERATOR_H_

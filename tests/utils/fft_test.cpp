@@ -4,6 +4,8 @@
 
 #include "utils/fft.h"
 
+namespace fft = vibra::fft;
+
 TEST(FFTTest, ReturnsMinimumMagnitudeForSilence) {
   fft::FFT<8> fft;
   const std::array<double, 8> input = {

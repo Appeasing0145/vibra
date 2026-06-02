@@ -17,6 +17,8 @@
 #define PACKED_ATTRIBUTE __attribute__((packed))
 #endif
 
+namespace vibra {
+
 struct RawSignatureHeader {
   uint32_t magic1;
   uint32_t crc32;
@@ -67,5 +69,7 @@ class Signature {
   std::uint32_t num_samples_;
   std::map<FrequencyBand, std::list<FrequencyPeak>> frequency_band_to_peaks_;
 };
+
+}  // namespace vibra
 
 #endif  // LIB_ALGORITHM_SIGNATURE_H_

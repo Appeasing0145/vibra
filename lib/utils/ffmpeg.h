@@ -20,6 +20,8 @@
 #define PROCESS_CLOSE pclose
 #endif
 
+namespace vibra {
+
 namespace ffmpeg {
 
 constexpr const char* DEFAULT_FFMPEG_PATHS[] = {"ffmpeg", "ffmpeg.exe"};
@@ -117,5 +119,7 @@ bool FFmpegWrapper::isWindows() {
 }
 
 }  // namespace ffmpeg
+
+}  // namespace vibra
 
 #endif  // LIB_UTILS_FFMPEG_H_

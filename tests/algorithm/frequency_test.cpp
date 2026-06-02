@@ -4,6 +4,8 @@
 
 #include "algorithm/frequency.h"
 
+using vibra::FrequencyPeak;
+
 TEST(FrequencyPeakTest, ExposesConstructorValues) {
   FrequencyPeak peak(42, 6144, 2048, 16000);
 

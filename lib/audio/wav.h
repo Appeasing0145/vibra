@@ -6,6 +6,8 @@
 
 #include "audio/byte_control.h"
 
+namespace vibra {
+
 struct WavHeader {
   char riff_header[4];  // "RIFF"
   std::uint32_t file_size;
@@ -63,5 +65,7 @@ class Wav {
   std::uint32_t data_size_;
   std::unique_ptr<std::uint8_t[]> data_;
 };
+
+}  // namespace vibra
 
 #endif  // LIB_AUDIO_WAV_H_

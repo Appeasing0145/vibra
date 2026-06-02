@@ -7,6 +7,10 @@
 
 #include "audio/wav.h"
 
+using vibra::AudioFormat;
+using vibra::FmtSubchunk;
+using vibra::Wav;
+
 namespace {
 void Append(std::string* out, const char* bytes, std::size_t size) {
   out->append(bytes, size);

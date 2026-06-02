@@ -4,6 +4,11 @@
 
 #include "algorithm/signature_generator.h"
 
+using vibra::LOW_QUALITY_SAMPLE_RATE;
+using vibra::LowQualityTrack;
+using vibra::Signature;
+using vibra::SignatureGenerator;
+
 TEST(SignatureGeneratorTest, ThrowsWhenInputIsTooShort) {
   SignatureGenerator generator;
 

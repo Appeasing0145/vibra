@@ -8,6 +8,12 @@
 #include "audio/downsampler.h"
 #include "audio/wav.h"
 
+using vibra::Downsampler;
+using vibra::LOW_QUALITY_SAMPLE_BIT_WIDTH;
+using vibra::LOW_QUALITY_SAMPLE_RATE;
+using vibra::LowQualityTrack;
+using vibra::Wav;
+
 namespace {
 constexpr double kPi = 3.14159265358979323846;
 

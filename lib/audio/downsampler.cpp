@@ -10,6 +10,8 @@
 #include "audio/byte_control.h"
 #include "audio/wav.h"
 
+namespace vibra {
+
 double Downsampler::readSignedFrameAsMono(const void* src, std::uint32_t frame,
                                           std::uint32_t width,
                                           std::uint32_t channels) {
@@ -198,3 +200,5 @@ void Downsampler::floatMultiToMono(LowQualityTrack* dst, const void* src,
   floatMonoToMono<T>(dst, src, downsample_ratio, new_sample_count, width,
                      channels);
 }
+
+}  // namespace vibra

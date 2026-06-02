@@ -11,6 +11,8 @@
 #include "communication/user_agents.h"
 #include "utils/uuid4.h"
 
+namespace vibra {
+
 // static variables initialization
 constexpr char Shazam::HOST[];
 
@@ -117,3 +119,5 @@ std::string Shazam::getTimezone() {
   std::uniform_int_distribution<> dis_timezone(0, EUROPE_TIMEZONES_SIZE - 1);
   return EUROPE_TIMEZONES[dis_timezone(gen)];
 }
+
+}  // namespace vibra

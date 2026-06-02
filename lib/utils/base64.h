@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace vibra {
+
 namespace base64 {
 static const char base64_chars[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -51,5 +53,7 @@ inline std::string encode(const char* bytes_to_encode, unsigned int in_len) {
   return ret;
 }
 }  // namespace base64
+
+}  // namespace vibra
 
 #endif  // LIB_UTILS_BASE64_H_

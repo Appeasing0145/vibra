@@ -10,6 +10,8 @@
 
 #include "utils/hanning.h"
 
+namespace vibra {
+
 SignatureGenerator::SignatureGenerator()
     : input_pending_processing_(),
       sample_processed_(0),
@@ -212,3 +214,5 @@ void SignatureGenerator::resetSignatureGenerater() {
   spread_ffts_output_ =
       RingBuffer<decltype(fft_object_)::FFTOutput>(256, {0.0});
 }
+
+}  // namespace vibra

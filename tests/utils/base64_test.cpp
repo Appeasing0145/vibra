@@ -2,6 +2,8 @@
 
 #include "utils/base64.h"
 
+namespace base64 = vibra::base64;
+
 TEST(Base64Test, EncodesEmptyInput) {
   EXPECT_EQ(base64::encode("", 0), "");
 }

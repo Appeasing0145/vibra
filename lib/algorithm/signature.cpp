@@ -7,6 +7,8 @@
 #include "utils/base64.h"
 #include "utils/crc32.h"
 
+namespace vibra {
+
 Signature::Signature(std::uint32_t sample_rate, std::uint32_t num_samples)
     : sample_rate_(sample_rate), num_samples_(num_samples) {}
 
@@ -92,3 +94,5 @@ std::string Signature::EncodeBase64() const {
 }
 
 Signature::~Signature() {}
+
+}  // namespace vibra

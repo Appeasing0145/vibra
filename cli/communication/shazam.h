@@ -7,6 +7,8 @@
 struct Fingerprint;
 //
 
+namespace vibra {
+
 class Shazam {
   static constexpr char HOST[] =
       "https://amp.shazam.com/discovery/v5/fr/FR/android/-/tag/";
@@ -21,5 +23,7 @@ class Shazam {
                                        unsigned int sample_ms);
   static std::string getTimezone();
 };
+
+}  // namespace vibra
 
 #endif  // CLI_COMMUNICATION_SHAZAM_H_
