@@ -1,4 +1,4 @@
-name: Linux AMD64
+name: CI Linux ARM64
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  linux-amd64:
-    runs-on: ubuntu-22.04
+  ci-linux-arm64:
+    runs-on: ubuntu-22.04-arm
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,10 +20,23 @@ jobs:
           sudo apt-get install -y build-essential libcurl4-openssl-dev
 
       - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SUFFIX=linux-amd64
+        run: >
+          cmake -B build
+          -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_SUFFIX=linux-arm64
+          -DBUILD_TESTING=OFF
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/build --config Release
+
+      - name: Configure unit tests
+        run: cmake -B build-test -DCMAKE_BUILD_TYPE=Debug -DLIBRARY_ONLY=ON
+
+      - name: Build unit tests
+        run: cmake --build build-test --target vibra_unit_tests --config Debug
+
+      - name: Run unit tests
+        run: ctest --test-dir build-test -C Debug --output-on-failure
 
       - name: Check build results
         run: |
@@ -33,7 +46,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: vibra-linux-amd64
+          name: vibra-linux-arm64
           path: |
             build/cli/vibra*
             build/lib/libvibra*

@@ -1,4 +1,4 @@
-name: WebAssembly
+name: CI WebAssembly
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  web-assembly:
+  ci-webassembly:
     runs-on: ubuntu-22.04
     steps:
       - name: Setup emsdk
