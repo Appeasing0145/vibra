@@ -38,5 +38,19 @@ signature = get_signature_from_signed_pcm(
 )
 ```
 
+## Shazam recognition
+
+The Shazam communication adapter uses `requests` and is separate from the core
+fingerprint wrapper:
+
+```python
+from vibra import Shazam, Vibra
+
+signature = Vibra().get_signature("sample.wav")
+result = Shazam.recognize(signature)
+
+print(result["track"]["title"])
+```
+
 Non-WAV file input uses vibra's native FFmpeg lookup. Install FFmpeg or set
 `FFMPEG_PATH` when using formats such as MP3 or FLAC.

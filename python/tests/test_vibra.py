@@ -2,11 +2,35 @@ import struct
 import unittest
 
 from vibra import (
+    Shazam,
+    Signature,
     Vibra,
     get_signature_from_float_pcm,
     get_signature_from_signed_pcm,
     get_signature_from_wav_data,
 )
+
+
+class FakeResponse:
+    def __init__(self, data):
+        self.data = data
+        self.raised = False
+
+    def raise_for_status(self):
+        self.raised = True
+
+    def json(self):
+        return self.data
+
+
+class FakeSession:
+    def __init__(self):
+        self.calls = []
+        self.response = FakeResponse({"track": {"title": "Misty"}})
+
+    def post(self, url, **kwargs):
+        self.calls.append((url, kwargs))
+        return self.response
 
 
 def make_wav(samples):
@@ -69,6 +93,32 @@ class VibraTest(unittest.TestCase):
         )
 
         self.assertEqual(signature.sample_ms, 8)
+
+    def test_shazam_adapter_posts_signature_with_requests_session(self):
+        session = FakeSession()
+        signature = Signature(
+            uri="data:audio/vnd.shazam.sig;base64,abc",
+            sample_ms=8000,
+        )
+
+        result = Shazam.recognize(signature, session=session, timeout=3.0)
+
+        self.assertEqual(result["track"]["title"], "Misty")
+        self.assertTrue(session.response.raised)
+        self.assertEqual(len(session.calls), 1)
+
+        url, kwargs = session.calls[0]
+        self.assertTrue(url.startswith(Shazam.endpoint))
+        self.assertIn("shazamapiversion=v3", url)
+        self.assertEqual(kwargs["timeout"], 3.0)
+        self.assertEqual(kwargs["headers"]["Content-Type"], "application/json")
+        self.assertEqual(kwargs["headers"]["Content-Language"], "en_US")
+        self.assertIn("User-Agent", kwargs["headers"])
+        self.assertEqual(
+            kwargs["json"]["signature"]["uri"],
+            "data:audio/vnd.shazam.sig;base64,abc",
+        )
+        self.assertEqual(kwargs["json"]["signature"]["samplems"], 8000)
 
 
 if __name__ == "__main__":
