@@ -39,6 +39,12 @@ yarn.lock
 *.tsbuildinfo
 dist/
 
+# Python
+*.egg-info/
+.venv/
+venv/
+wheelhouse/
+
 # CLion
 .idea/
 cmake-build-debug/

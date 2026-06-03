@@ -49,10 +49,13 @@
 | **MacOS ARM64** | [![macos-arm64-main]][macos-arm64-main] | [ci-macos-arm64] |
 | **Windows AMD64** | [![windows-amd64-main]][windows-amd64-main] | [ci-windows-amd64] |
 | **WebAssembly** | [![webassembly-main]][webassembly-main] | [ci-webassembly] |
-| ***Python*** | *Coming soon...* | - |
+| **Python** | [![python-main]][python-main] | [ci-python] |
 
 ### Building the WebAssembly Version
 * Please refer to **[js/README.md](js/README.md)** for instructions on building and running the JavaScript/WebAssembly version of vibra.
+
+### Building the Python Package
+* Please refer to **[python/README.md](python/README.md)** for instructions on building and using the Python package.
 
 ### Building the Native Version
 
@@ -234,3 +237,6 @@ vibra --recognize --file sample.mp3
 
 [webassembly-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-webassembly.yaml/badge.svg
 [ci-webassembly]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-webassembly.yaml
+
+[python-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-python.yaml/badge.svg
+[ci-python]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-python.yaml
