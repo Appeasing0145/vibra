@@ -4,6 +4,7 @@
 #include <cstdlib>
 
 #include <array>
+#include <cstddef>
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -24,13 +25,14 @@ namespace vibra {
 
 namespace ffmpeg {
 
-constexpr const char* DEFAULT_FFMPEG_PATHS[] = {"ffmpeg", "ffmpeg.exe"};
-constexpr const char FFMPEG_PATH_ENV[] = "FFMPEG_PATH";
+constexpr std::array<const char*, 2> kDefaultFfmpegPaths = {
+    {"ffmpeg", "ffmpeg.exe"}};
+constexpr const char* kFfmpegPathEnv = "FFMPEG_PATH";
 
 class FFmpegWrapper {
  public:
   FFmpegWrapper() = delete;
-  static LowQualityTrack ConvertToLowQaulityPcm(std::string input_file,
+  static LowQualityTrack ConvertToLowQaulityPcm(const std::string& input_file,
                                                 std::uint32_t start_seconds,
                                                 std::uint32_t duration_seconds);
 
@@ -40,13 +42,13 @@ class FFmpegWrapper {
 };
 
 LowQualityTrack FFmpegWrapper::ConvertToLowQaulityPcm(
-    std::string input_file, std::uint32_t start_seconds,
+    const std::string& input_file, std::uint32_t start_seconds,
     std::uint32_t duration_seconds) {
   static std::string ffmpeg_path = FFmpegWrapper::getFFmpegPath();
   if (ffmpeg_path.empty()) {
     std::cerr
         << "FFmpeg not found on system. Please install FFmpeg or set the ";
-    std::cerr << FFMPEG_PATH_ENV << " environment variable." << std::endl;
+    std::cerr << kFfmpegPathEnv << " environment variable." << '\n';
     throw std::runtime_error("FFmpeg not found");
   }
 
@@ -54,26 +56,27 @@ LowQualityTrack FFmpegWrapper::ConvertToLowQaulityPcm(
   ss << ffmpeg_path;
   ss << " -i " << input_file;
   ss << " -f "
-     << "s" << LOW_QUALITY_SAMPLE_BIT_WIDTH << "le";
+     << "s" << kLowQualitySampleBitWidth << "le";
   ss << " -acodec "
-     << "pcm_s" << LOW_QUALITY_SAMPLE_BIT_WIDTH << "le";
-  ss << " -ar " << LOW_QUALITY_SAMPLE_RATE;
+     << "pcm_s" << kLowQualitySampleBitWidth << "le";
+  ss << " -ar " << kLowQualitySampleRate;
   ss << " -ac " << 1;
   ss << " -ss " << start_seconds;
   ss << " -t " << duration_seconds;
   ss << " -";            // stdout
   ss << " 2>/dev/null";  // suppress std
 
-  std::FILE* pipe = PROCESS_OPEN(ss.str().c_str(), "r");
+  std::FILE* pipe = PROCESS_OPEN(ss.str().c_str(), "r");  // NOLINT
   if (!pipe) {
     throw std::runtime_error("popen() failed!");
   }
 
   std::array<std::int16_t, 4096> buffer;
-  size_t bytes_read;
+  std::size_t bytes_read;
 
   LowQualityTrack pcm;
-  pcm.reserve(duration_seconds * LOW_QUALITY_SAMPLE_RATE);
+  pcm.reserve(static_cast<std::size_t>(duration_seconds) *
+              kLowQualitySampleRate);
 
   while ((bytes_read = std::fread(buffer.data(), 1, buffer.size(), pipe)) !=
          0) {
@@ -90,7 +93,7 @@ LowQualityTrack FFmpegWrapper::ConvertToLowQaulityPcm(
 }
 
 std::string FFmpegWrapper::getFFmpegPath() {
-  const char* ffmpeg_env = std::getenv(FFMPEG_PATH_ENV);
+  const char* ffmpeg_env = std::getenv(kFfmpegPathEnv);
   if (ffmpeg_env) {
     return ffmpeg_env;
   }
@@ -100,7 +103,7 @@ std::string FFmpegWrapper::getFFmpegPath() {
   std::string token;
   char delimiter = isWindows() ? ';' : ':';
   while (std::getline(ss, token, delimiter)) {
-    for (const char* ffmpeg_path : DEFAULT_FFMPEG_PATHS) {
+    for (const char* ffmpeg_path : kDefaultFfmpegPaths) {
       std::string full_path = token + "/" + ffmpeg_path;
       if (std::ifstream(full_path).good()) {
         return full_path;

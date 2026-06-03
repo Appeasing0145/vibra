@@ -10,8 +10,7 @@ struct Fingerprint;
 namespace vibra {
 
 class Shazam {
-  static constexpr char HOST[] =
-      "https://amp.shazam.com/discovery/v5/fr/FR/android/-/tag/";
+  static const char* const kHost;
 
  public:
   static std::string Recognize(const Fingerprint* fingerprint);

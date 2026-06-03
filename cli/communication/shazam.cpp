@@ -13,12 +13,12 @@
 
 namespace vibra {
 
-// static variables initialization
-constexpr char Shazam::HOST[];
+const char* const Shazam::kHost =
+    "https://amp.shazam.com/discovery/v5/fr/FR/android/-/tag/";
 
-std::size_t writeCallback(void* contents, size_t size, size_t nmemb,
+std::size_t WriteCallback(void* contents, size_t size, size_t nmemb,
                           void* userp) {
-  std::string* buffer = reinterpret_cast<std::string*>(userp);
+  auto* buffer = reinterpret_cast<std::string*>(userp);
   std::size_t realsize = size * nmemb;
   buffer->append(reinterpret_cast<char*>(contents), realsize);
   return realsize;
@@ -46,7 +46,7 @@ std::string Shazam::Recognize(const Fingerprint* fingerprint) {
     curl_easy_setopt(curl, CURLOPT_USERAGENT, user_agent.c_str());
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, content.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &read_buffer);
 
     curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "gzip, deflate, br");
@@ -55,13 +55,13 @@ std::string Shazam::Recognize(const Fingerprint* fingerprint) {
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
       std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res)
-                << std::endl;
+                << '\n';
     }
 
     std::int64_t http_code = 0;
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
     if (http_code != 200) {
-      std::cerr << "HTTP code: " << http_code << std::endl;
+      std::cerr << "HTTP code: " << http_code << '\n';
     }
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
@@ -70,7 +70,8 @@ std::string Shazam::Recognize(const Fingerprint* fingerprint) {
 }
 
 std::string Shazam::getShazamHost() {
-  std::string host = HOST + uuid4::generate() + "/" + uuid4::generate();
+  std::string host =
+      std::string(kHost) + uuid4::Generate() + "/" + uuid4::Generate();
   host +=
       "?sync=true&"
       "webv3=true&"
@@ -85,7 +86,7 @@ std::string Shazam::getShazamHost() {
 std::string Shazam::getRequestContent(const std::string& uri,
                                       unsigned int sample_ms) {
   std::mt19937 gen(std::random_device{}());
-  std::uniform_int_distribution<> dis_float(0.0, 1.0);
+  std::uniform_real_distribution<double> dis_float(0.0, 1.0);
 
   auto timezone = getTimezone();
   double fuzz = dis_float(gen) * 15.3 - 7.65;
@@ -100,7 +101,7 @@ std::string Shazam::getRequestContent(const std::string& uri,
   json_buf << "\"signature\":{";
   json_buf << "\"samplems\":" << sample_ms << ",";
   json_buf << "\"timestamp\":" << time(nullptr) * 1000ULL << ",";
-  json_buf << "\"uri\":\"" << uri << "\"";
+  json_buf << R"("uri":")" << uri << "\"";
   json_buf << "},";
   json_buf << "\"timestamp\":" << time(nullptr) * 1000ULL << ",";
   json_buf << "\"timezone\":"
@@ -112,14 +113,14 @@ std::string Shazam::getRequestContent(const std::string& uri,
 
 std::string Shazam::getUserAgent() {
   std::mt19937 gen(std::random_device{}());
-  std::uniform_int_distribution<> dis_useragent(0, USER_AGENTS_SIZE - 1);
-  return USER_AGENTS[dis_useragent(gen)];
+  std::uniform_int_distribution<> dis_useragent(0, kUserAgentsSize - 1);
+  return kUserAgents[dis_useragent(gen)];
 }
 
 std::string Shazam::getTimezone() {
   std::mt19937 gen(std::random_device{}());
-  std::uniform_int_distribution<> dis_timezone(0, EUROPE_TIMEZONES_SIZE - 1);
-  return EUROPE_TIMEZONES[dis_timezone(gen)];
+  std::uniform_int_distribution<> dis_timezone(0, kEuropeTimezonesSize - 1);
+  return kEuropeTimezones[dis_timezone(gen)];
 }
 
 }  // namespace vibra
