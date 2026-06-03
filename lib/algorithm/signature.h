@@ -26,9 +26,9 @@ struct RawSignatureHeader {
   uint32_t crc32;
   uint32_t size_minus_header;
   uint32_t magic2;
-  uint32_t void1[3];
+  std::array<uint32_t, 3> void1;
   uint32_t shifted_sample_rate_id;
-  uint32_t void2[2];
+  std::array<uint32_t, 2> void2;
   uint32_t number_samples_plus_divided_sample_rate;
   uint32_t fixed_value;
 } PACKED_ATTRIBUTE;
@@ -62,18 +62,17 @@ class Signature {
 
  private:
   template <typename T>
-  std::stringstream& write_little_endian(std::stringstream& stream,
-                                         const T&& value,
-                                         size_t size = sizeof(T)) const {
-    for (size_t i = 0; i < size; ++i) {
+  std::stringstream& writeLittleEndian(std::stringstream& stream, T value,
+                                       std::size_t size = sizeof(T)) const {
+    for (std::size_t i = 0; i < size; ++i) {
       stream << static_cast<char>(value >> (i << 3));
     }
     return stream;
   }
 
  private:
-  std::uint32_t sample_rate_;
-  std::uint32_t num_samples_;
+  std::uint32_t sample_rate_ = 0;
+  std::uint32_t num_samples_ = 0;
   std::map<FrequencyBand, std::list<FrequencyPeak>> frequency_band_to_peaks_;
 };
 

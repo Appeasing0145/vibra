@@ -15,8 +15,8 @@ namespace fft {
 template <int INPUT_SIZE>
 class FFT {
  public:
-  constexpr static const int OUTPUT_SIZE = INPUT_SIZE / 2 + 1;
-  using FFTOutput = std::array<long double, OUTPUT_SIZE>;
+  constexpr static const int kOutputSize = INPUT_SIZE / 2 + 1;
+  using FFTOutput = std::array<double, kOutputSize>;
 
  public:
   FFT() : fft_cfg_(kiss_fftr_alloc(INPUT_SIZE, 0, nullptr, nullptr)) {
@@ -42,16 +42,16 @@ class FFT {
 
     double real_val = 0.0;
     double imag_val = 0.0;
-    const double min_val = 1e-10;
-    const double scale_factor = 1.0 / (1 << 17);
+    const double kMinVal = 1e-10;
+    const double kScaleFactor = 1.0 / (1 << 17);
 
     // do max((real^2 + imag^2) / (1 << 17), 0.0000000001)
-    for (std::size_t i = 0; i < OUTPUT_SIZE; ++i) {
+    for (std::size_t i = 0; i < kOutputSize; ++i) {
       real_val = output_data_buffer_[i].r;
       imag_val = output_data_buffer_[i].i;
 
-      real_val = (real_val * real_val + imag_val * imag_val) * scale_factor;
-      real_output[i] = (real_val < min_val) ? min_val : real_val;
+      real_val = (real_val * real_val + imag_val * imag_val) * kScaleFactor;
+      real_output[i] = (real_val < kMinVal) ? kMinVal : real_val;
     }
     return real_output;
   }
@@ -61,7 +61,7 @@ class FFT {
  private:
   kiss_fftr_cfg fft_cfg_;
   std::array<kiss_fft_scalar, INPUT_SIZE> input_data_buffer_;
-  std::array<kiss_fft_cpx, OUTPUT_SIZE> output_data_buffer_;
+  std::array<kiss_fft_cpx, kOutputSize> output_data_buffer_;
 };
 }  // namespace fft
 

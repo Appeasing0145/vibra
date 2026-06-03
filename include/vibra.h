@@ -1,16 +1,17 @@
 #ifndef INCLUDE_VIBRA_H_
 #define INCLUDE_VIBRA_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  * @brief Opaque handle for a generated music fingerprint.
  *
  * @note The returned pointer must be freed with vibra_free_fingerprint().
  */
+#ifdef __cplusplus
+struct Fingerprint;
+extern "C" {
+#else
 typedef struct Fingerprint Fingerprint;
+#endif
 
 /**
  * @brief Generate a fingerprint from a music file.

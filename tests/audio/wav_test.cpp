@@ -33,7 +33,7 @@ std::string MakeRawWav(const std::vector<std::int16_t>& samples) {
   Append(&raw, "fmt ", 4);
   AppendLittleEndian<std::uint32_t>(&raw, sizeof(FmtSubchunk));
   AppendLittleEndian<std::uint16_t>(
-      &raw, static_cast<std::uint16_t>(AudioFormat::PCM_INTEGER));
+      &raw, static_cast<std::uint16_t>(AudioFormat::kPcmInteger));
   AppendLittleEndian<std::uint16_t>(&raw, 1);
   AppendLittleEndian<std::uint32_t>(&raw, 16000);
   AppendLittleEndian<std::uint32_t>(&raw, 16000 * sizeof(std::int16_t));
@@ -52,7 +52,7 @@ TEST(WavTest, CreatesSignedPcmWavMetadata) {
                                      sizeof(samples), 44100, 16, 2);
 
   EXPECT_EQ(wav.audio_format(),
-            static_cast<std::uint16_t>(AudioFormat::PCM_INTEGER));
+            static_cast<std::uint16_t>(AudioFormat::kPcmInteger));
   EXPECT_EQ(wav.num_channels(), 2);
   EXPECT_EQ(wav.sample_rate_(), 44100u);
   EXPECT_EQ(wav.bits_per_sample(), 16u);
@@ -65,7 +65,7 @@ TEST(WavTest, CreatesFloatPcmWavMetadata) {
                                     sizeof(samples), 48000, 32, 1);
 
   EXPECT_EQ(wav.audio_format(),
-            static_cast<std::uint16_t>(AudioFormat::PCM_FLOAT));
+            static_cast<std::uint16_t>(AudioFormat::kPcmFloat));
   EXPECT_EQ(wav.num_channels(), 1);
   EXPECT_EQ(wav.sample_rate_(), 48000u);
   EXPECT_EQ(wav.bits_per_sample(), 32u);
@@ -79,12 +79,12 @@ TEST(WavTest, ParsesRawWavData) {
   const Wav wav = Wav::FromRawWav(raw.data(), raw.size());
 
   EXPECT_EQ(wav.audio_format(),
-            static_cast<std::uint16_t>(AudioFormat::PCM_INTEGER));
+            static_cast<std::uint16_t>(AudioFormat::kPcmInteger));
   EXPECT_EQ(wav.num_channels(), 1);
   EXPECT_EQ(wav.sample_rate_(), 16000u);
   EXPECT_EQ(wav.bits_per_sample(), 16u);
   EXPECT_EQ(wav.data_size(), samples.size() * sizeof(std::int16_t));
-  EXPECT_EQ(reinterpret_cast<const std::int16_t*>(wav.data().get())[1], -200);
+  EXPECT_EQ(reinterpret_cast<const std::int16_t*>(wav.data())[1], -200);
 }
 
 TEST(WavTest, RejectsInvalidRawWavData) {

@@ -1,6 +1,8 @@
 #ifndef LIB_AUDIO_WAV_H_
 #define LIB_AUDIO_WAV_H_
 
+#include <array>
+#include <cstdlib>
 #include <memory>
 #include <string>
 
@@ -9,9 +11,9 @@
 namespace vibra {
 
 struct WavHeader {
-  char riff_header[4];  // "RIFF"
+  std::array<char, 4> riff_header;  // "RIFF"
   std::uint32_t file_size;
-  char wave_header[4];  // "WAVE"
+  std::array<char, 4> wave_header;  // "WAVE"
 };
 
 struct FmtSubchunk {
@@ -23,9 +25,9 @@ struct FmtSubchunk {
   std::uint16_t bits_per_sample;
 };
 
-enum class AudioFormat {
-  PCM_INTEGER = 1,
-  PCM_FLOAT = 3,
+enum class AudioFormat : std::uint8_t {
+  kPcmInteger = 1,
+  kPcmFloat = 3,
 };
 
 class Wav {
@@ -41,7 +43,7 @@ class Wav {
   static Wav FromFloatPCM(const char* raw_pcm, std::uint32_t raw_pcm_size,
                           std::uint32_t sample_rate, std::uint32_t sample_width,
                           std::uint32_t channel_count);
-  ~Wav();
+  ~Wav() = default;
 
   inline std::uint16_t audio_format() const { return fmt_.audio_format; }
   inline std::uint16_t num_channels() const { return fmt_.num_channels; }
@@ -49,21 +51,23 @@ class Wav {
   inline std::uint32_t bits_per_sample() const { return fmt_.bits_per_sample; }
   inline std::uint32_t data_size() const { return data_size_; }
   inline std::uint32_t file_size() const { return header_.file_size; }
-  inline const std::unique_ptr<std::uint8_t[]>& data() const { return data_; }
+  inline const std::uint8_t* data() const { return data_.get(); }
 
  private:
   Wav() = default;
   static Wav fromPCM(const char* raw_pcm, std::uint32_t raw_pcm_size,
                      AudioFormat audio_format, std::uint32_t sample_rate,
                      std::uint32_t sample_width, std::uint32_t channel_count);
+  static std::uint8_t* allocateData(std::uint32_t data_size);
   void readWavFileBuffer(std::istream& stream);
 
  private:
   WavHeader header_;
   FmtSubchunk fmt_;
   std::string wav_file_path_;
-  std::uint32_t data_size_;
-  std::unique_ptr<std::uint8_t[]> data_;
+  std::uint32_t data_size_ = 0;
+  std::unique_ptr<std::uint8_t, decltype(&std::free)> data_{nullptr,
+                                                            &std::free};
 };
 
 }  // namespace vibra

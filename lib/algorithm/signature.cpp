@@ -45,25 +45,25 @@ std::string Signature::EncodeBase64() const {
     for (const auto& peak : peaks) {
       if (peak.fft_pass_number() - fft_pass_number >= 255) {
         peak_buf << "\xff";
-        write_little_endian(peak_buf, peak.fft_pass_number());
+        writeLittleEndian(peak_buf, peak.fft_pass_number());
         fft_pass_number = peak.fft_pass_number();
       }
 
       peak_buf << static_cast<char>(peak.fft_pass_number() - fft_pass_number);
-      write_little_endian(peak_buf, peak.peak_magnitude(), 2);
-      write_little_endian(peak_buf, peak.corrected_peak_frequency_bin(), 2);
+      writeLittleEndian(peak_buf, peak.peak_magnitude(), 2);
+      writeLittleEndian(peak_buf, peak.corrected_peak_frequency_bin(), 2);
 
       fft_pass_number = peak.fft_pass_number();
     }
 
-    write_little_endian(contents,
-                        0x60030040u + static_cast<std::uint32_t>(band));
-    write_little_endian(contents,
-                        static_cast<std::uint32_t>(peak_buf.str().size()));
+    writeLittleEndian(contents, 0x60030040u + static_cast<std::uint32_t>(band));
+    writeLittleEndian(contents,
+                      static_cast<std::uint32_t>(peak_buf.str().size()));
     contents << peak_buf.str();
 
-    for (std::size_t i = 0; i < (-peak_buf.str().size() % 4); ++i)
+    for (std::size_t i = 0; i < (-peak_buf.str().size() % 4); ++i) {
       contents << '\0';
+    }
   }
 
   header.size_minus_header = contents.str().size() + 8;
@@ -71,15 +71,15 @@ std::string Signature::EncodeBase64() const {
   std::stringstream header_buf;
   header_buf.write(reinterpret_cast<const char*>(&header), sizeof(header));
 
-  write_little_endian(header_buf, 0x40000000u);
-  write_little_endian(header_buf,
-                      static_cast<std::uint32_t>(contents.str().size()) + 8);
+  writeLittleEndian(header_buf, 0x40000000u);
+  writeLittleEndian(header_buf,
+                    static_cast<std::uint32_t>(contents.str().size()) + 8);
 
   header_buf << contents.str();
 
   const auto& header_buf_str = header_buf.str();
   header.crc32 =
-      crc32::crc32(header_buf_str.c_str() + 8, header_buf_str.size() - 8) &
+      crc32::Crc32(header_buf_str.c_str() + 8, header_buf_str.size() - 8) &
       0xffffffff;
 
   header_buf.seekp(0);
@@ -89,10 +89,8 @@ std::string Signature::EncodeBase64() const {
 
   std::string base64_uri;
   base64_uri += "data:audio/vnd.shazam.sig;base64,";
-  base64_uri += base64::encode(header_string.c_str(), header_string.size());
+  base64_uri += base64::Encode(header_string.c_str(), header_string.size());
   return base64_uri;
 }
-
-Signature::~Signature() {}
 
 }  // namespace vibra
