@@ -14,13 +14,20 @@ class Wav;
 using LowQualitySample = std::int16_t;
 using LowQualityTrack = std::vector<LowQualitySample>;
 
-constexpr std::uint32_t LOW_QUALITY_SAMPLE_RATE = 16000;
-constexpr std::uint32_t LOW_QUALITY_SAMPLE_BIT_WIDTH =
+constexpr std::uint32_t kLowQualitySampleRate = 16000;
+constexpr std::uint32_t kLowQualitySampleBitWidth =
     sizeof(LowQualitySample) * 8;
-constexpr std::uint32_t LOW_QUALITY_SAMPLE_MAX = 32767;
+constexpr std::uint32_t kLowQualitySampleMax = 32767;
 
-using DownsampleFunc = void (*)(LowQualityTrack*, const void*, double,
-                                std::uint32_t, std::uint32_t, std::uint32_t);
+struct DownsampleConfig {
+  double ratio;
+  std::uint32_t new_sample_count;
+  std::uint32_t width;
+  std::uint32_t channels;
+};
+
+using DownsampleFunc = void (*)(LowQualityTrack*, const void*,
+                                const DownsampleConfig&);
 
 class Downsampler {
  public:
@@ -42,33 +49,21 @@ class Downsampler {
                                      std::uint32_t channels);
 
   static void signedStereoToMono(LowQualityTrack* dst, const void* src,
-                                 double downsample_ratio,
-                                 std::uint32_t new_sample_count,
-                                 std::uint32_t width, std::uint32_t channels);
+                                 const DownsampleConfig& config);
   static void signedMonoToMono(LowQualityTrack* dst, const void* src,
-                               double downsample_ratio,
-                               std::uint32_t new_sample_count,
-                               std::uint32_t width, std::uint32_t channels);
+                               const DownsampleConfig& config);
   static void signedMultiToMono(LowQualityTrack* dst, const void* src,
-                                double downsample_ratio,
-                                std::uint32_t new_sample_count,
-                                std::uint32_t width, std::uint32_t channels);
+                                const DownsampleConfig& config);
 
   template <typename T>
   static void floatStereoToMono(LowQualityTrack* dst, const void* src,
-                                double downsample_ratio,
-                                std::uint32_t new_sample_count,
-                                std::uint32_t width, std::uint32_t channels);
+                                const DownsampleConfig& config);
   template <typename T>
   static void floatMonoToMono(LowQualityTrack* dst, const void* src,
-                              double downsample_ratio,
-                              std::uint32_t new_sample_count,
-                              std::uint32_t width, std::uint32_t channels);
+                              const DownsampleConfig& config);
   template <typename T>
   static void floatMultiToMono(LowQualityTrack* dst, const void* src,
-                               double downsample_ratio,
-                               std::uint32_t new_sample_count,
-                               std::uint32_t width, std::uint32_t channels);
+                               const DownsampleConfig& config);
 };
 
 }  // namespace vibra

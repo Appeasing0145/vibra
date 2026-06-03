@@ -4,7 +4,7 @@
 
 #include "algorithm/signature_generator.h"
 
-using vibra::LOW_QUALITY_SAMPLE_RATE;
+using vibra::kLowQualitySampleRate;
 using vibra::LowQualityTrack;
 using vibra::Signature;
 using vibra::SignatureGenerator;
@@ -22,7 +22,7 @@ TEST(SignatureGeneratorTest, GeneratesSignatureFromOneChunk) {
 
   const Signature signature = generator.GetNextSignature();
 
-  EXPECT_EQ(signature.sample_rate(), LOW_QUALITY_SAMPLE_RATE);
+  EXPECT_EQ(signature.sample_rate(), kLowQualitySampleRate);
   EXPECT_EQ(signature.num_samples(), 128u);
 }
 

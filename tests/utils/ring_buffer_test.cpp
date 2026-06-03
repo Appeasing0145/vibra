@@ -50,3 +50,15 @@ TEST(RingBufferTest, SupportsNegativeIndexFromBack) {
   EXPECT_EQ(buffer[-2], 20);
   EXPECT_EQ(buffer[-3], 10);
 }
+
+TEST(RingBufferTest, WrapsSignedPositionOffset) {
+  RingBuffer<std::int32_t> buffer(3, 0);
+
+  buffer.Append(10);
+  buffer.Append(20);
+  buffer.Append(30);
+
+  const std::uint32_t position = 0;
+
+  EXPECT_EQ(buffer[static_cast<std::int32_t>(position) - 1], 30);
+}

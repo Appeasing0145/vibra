@@ -9,8 +9,8 @@
 #include "audio/wav.h"
 
 using vibra::Downsampler;
-using vibra::LOW_QUALITY_SAMPLE_BIT_WIDTH;
-using vibra::LOW_QUALITY_SAMPLE_RATE;
+using vibra::kLowQualitySampleBitWidth;
+using vibra::kLowQualitySampleRate;
 using vibra::LowQualityTrack;
 using vibra::Wav;
 
@@ -32,8 +32,8 @@ std::vector<std::int16_t> MakeSineWave(std::uint32_t sample_rate,
 TEST(DownsamplerTest, CopiesAlreadyLowQualityMonoPcm) {
   const std::int16_t samples[] = {100, -200, 300};
   const Wav wav = Wav::FromSignedPCM(reinterpret_cast<const char*>(samples),
-                                     sizeof(samples), LOW_QUALITY_SAMPLE_RATE,
-                                     LOW_QUALITY_SAMPLE_BIT_WIDTH, 1);
+                                     sizeof(samples), kLowQualitySampleRate,
+                                     kLowQualitySampleBitWidth, 1);
 
   const LowQualityTrack downsampled = Downsampler::GetLowQualityPCM(wav);
 
@@ -46,8 +46,8 @@ TEST(DownsamplerTest, CopiesAlreadyLowQualityMonoPcm) {
 TEST(DownsamplerTest, MixesSignedStereoToMono) {
   const std::int16_t samples[] = {1000, 3000, -1000, 1000};
   const Wav wav = Wav::FromSignedPCM(reinterpret_cast<const char*>(samples),
-                                     sizeof(samples), LOW_QUALITY_SAMPLE_RATE,
-                                     LOW_QUALITY_SAMPLE_BIT_WIDTH, 2);
+                                     sizeof(samples), kLowQualitySampleRate,
+                                     kLowQualitySampleBitWidth, 2);
 
   const LowQualityTrack downsampled = Downsampler::GetLowQualityPCM(wav);
 
@@ -58,9 +58,9 @@ TEST(DownsamplerTest, MixesSignedStereoToMono) {
 
 TEST(DownsamplerTest, DownsamplesSignedMonoByRatio) {
   const std::int16_t samples[] = {1, 2, 3, 4};
-  const Wav wav = Wav::FromSignedPCM(
-      reinterpret_cast<const char*>(samples), sizeof(samples),
-      LOW_QUALITY_SAMPLE_RATE * 2, LOW_QUALITY_SAMPLE_BIT_WIDTH, 1);
+  const Wav wav = Wav::FromSignedPCM(reinterpret_cast<const char*>(samples),
+                                     sizeof(samples), kLowQualitySampleRate * 2,
+                                     kLowQualitySampleBitWidth, 1);
 
   const LowQualityTrack downsampled = Downsampler::GetLowQualityPCM(wav);
 
@@ -71,12 +71,12 @@ TEST(DownsamplerTest, DownsamplesSignedMonoByRatio) {
 
 TEST(DownsamplerTest, ResamplesSignedMonoToMatchEquivalentLowQualityTone) {
   const std::vector<std::int16_t> reference =
-      MakeSineWave(LOW_QUALITY_SAMPLE_RATE, 0.1, 440.0);
+      MakeSineWave(kLowQualitySampleRate, 0.1, 440.0);
   const std::vector<std::int16_t> source = MakeSineWave(44100, 0.1, 440.0);
   const Wav wav =
       Wav::FromSignedPCM(reinterpret_cast<const char*>(source.data()),
                          source.size() * sizeof(std::int16_t), 44100,
-                         LOW_QUALITY_SAMPLE_BIT_WIDTH, 1);
+                         kLowQualitySampleBitWidth, 1);
 
   const LowQualityTrack downsampled = Downsampler::GetLowQualityPCM(wav);
 
@@ -95,7 +95,7 @@ TEST(DownsamplerTest, ConvertsFloatMonoToSignedLowQualityPcm) {
   const float samples[] = {0.5f, -0.5f};
   const Wav wav =
       Wav::FromFloatPCM(reinterpret_cast<const char*>(samples), sizeof(samples),
-                        LOW_QUALITY_SAMPLE_RATE, 32, 1);
+                        kLowQualitySampleRate, 32, 1);
 
   const LowQualityTrack downsampled = Downsampler::GetLowQualityPCM(wav);
 

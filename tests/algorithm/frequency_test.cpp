@@ -7,7 +7,7 @@
 using vibra::FrequencyPeak;
 
 TEST(FrequencyPeakTest, ExposesConstructorValues) {
-  FrequencyPeak peak(42, 6144, 2048, 16000);
+  FrequencyPeak peak({42, 6144, 2048, 16000});
 
   EXPECT_EQ(peak.fft_pass_number(), 42u);
   EXPECT_EQ(peak.peak_magnitude(), 6144u);
@@ -15,7 +15,7 @@ TEST(FrequencyPeakTest, ExposesConstructorValues) {
 }
 
 TEST(FrequencyPeakTest, ComputesFrequencyAmplitudeAndElapsedSeconds) {
-  FrequencyPeak peak(10, 6144, 1024, 16000);
+  FrequencyPeak peak({10, 6144, 1024, 16000});
 
   EXPECT_DOUBLE_EQ(peak.ComputeFrequency(), 125.0);
   EXPECT_DOUBLE_EQ(peak.ComputeElapsedSeconds(), 0.08);

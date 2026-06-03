@@ -9,13 +9,13 @@ using vibra::FrequencyPeak;
 using vibra::Signature;
 
 TEST(SignatureTest, TracksSampleMetadataAndPeakCounts) {
-  Signature signature(16000, 128);
+  Signature signature({16000, 128});
 
-  signature.Addnum_samples(256);
-  signature.frequency_band_to_peaks()[FrequencyBand::_250_520].push_back(
-      FrequencyPeak(1, 6000, 2048, 16000));
-  signature.frequency_band_to_peaks()[FrequencyBand::_520_1450].push_back(
-      FrequencyPeak(2, 6100, 4096, 16000));
+  signature.AddNumSamples(256);
+  signature.frequency_band_to_peaks()[FrequencyBand::k250To520].push_back(
+      FrequencyPeak({1, 6000, 2048, 16000}));
+  signature.frequency_band_to_peaks()[FrequencyBand::k520To1450].push_back(
+      FrequencyPeak({2, 6100, 4096, 16000}));
 
   EXPECT_EQ(signature.sample_rate(), 16000u);
   EXPECT_EQ(signature.num_samples(), 384u);
@@ -23,11 +23,11 @@ TEST(SignatureTest, TracksSampleMetadataAndPeakCounts) {
 }
 
 TEST(SignatureTest, ResetClearsPeaksAndUpdatesMetadata) {
-  Signature signature(16000, 128);
-  signature.frequency_band_to_peaks()[FrequencyBand::_250_520].push_back(
-      FrequencyPeak(1, 6000, 2048, 16000));
+  Signature signature({16000, 128});
+  signature.frequency_band_to_peaks()[FrequencyBand::k250To520].push_back(
+      FrequencyPeak({1, 6000, 2048, 16000}));
 
-  signature.Reset(8000, 64);
+  signature.Reset({8000, 64});
 
   EXPECT_EQ(signature.sample_rate(), 8000u);
   EXPECT_EQ(signature.num_samples(), 64u);
@@ -36,10 +36,10 @@ TEST(SignatureTest, ResetClearsPeaksAndUpdatesMetadata) {
 }
 
 TEST(SignatureTest, EncodesAsShazamDataUri) {
-  Signature signature(16000, 128);
+  Signature signature({16000, 128});
   const std::string prefix = "data:audio/vnd.shazam.sig;base64,";
-  signature.frequency_band_to_peaks()[FrequencyBand::_250_520].push_back(
-      FrequencyPeak(1, 6144, 2048, 16000));
+  signature.frequency_band_to_peaks()[FrequencyBand::k250To520].push_back(
+      FrequencyPeak({1, 6144, 2048, 16000}));
 
   const std::string encoded = signature.EncodeBase64();
 

@@ -9,12 +9,12 @@
 
 namespace vibra {
 
-Signature::Signature(std::uint32_t sample_rate, std::uint32_t num_samples)
-    : sample_rate_(sample_rate), num_samples_(num_samples) {}
+Signature::Signature(const SignatureData& data)
+    : sample_rate_(data.sample_rate), num_samples_(data.num_samples) {}
 
-void Signature::Reset(std::uint32_t sampleRate, std::uint32_t num_samples) {
-  sample_rate_ = sampleRate;
-  num_samples_ = num_samples;
+void Signature::Reset(const SignatureData& data) {
+  sample_rate_ = data.sample_rate;
+  num_samples_ = data.num_samples;
   frequency_band_to_peaks_.clear();
 }
 

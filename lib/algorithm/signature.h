@@ -1,6 +1,8 @@
 #ifndef LIB_ALGORITHM_SIGNATURE_H_
 #define LIB_ALGORITHM_SIGNATURE_H_
 
+#include <array>
+#include <cstdint>
 #include <list>
 #include <map>
 #include <memory>
@@ -35,13 +37,18 @@ struct RawSignatureHeader {
 #pragma pack(pop)
 #endif
 
+struct SignatureData {
+  std::uint32_t sample_rate;
+  std::uint32_t num_samples;
+};
+
 class Signature {
  public:
-  Signature(std::uint32_t sample_rate, std::uint32_t num_samples);
-  ~Signature();
-  void Reset(std::uint32_t sampleRate, std::uint32_t num_samples);
+  explicit Signature(const SignatureData& data);
+  ~Signature() = default;
+  void Reset(const SignatureData& data);
 
-  inline void Addnum_samples(std::uint32_t num_samples) {
+  inline void AddNumSamples(std::uint32_t num_samples) {
     num_samples_ += num_samples;
   }
   inline std::uint32_t sample_rate() const { return sample_rate_; }
