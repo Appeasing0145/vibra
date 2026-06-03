@@ -12,7 +12,7 @@ target_link_libraries(vibra_wasm_global PRIVATE vibra_static)
 
 set(VIBRA_WASM_LINK_OPTIONS
     "SHELL:-s EXPORTED_FUNCTIONS=['_GetWavSignature','_GetSignedPcmSignature','_GetFloatPcmSignature','_GetFingerprint','_GetSampleMs','_FreeFingerprint','_malloc','_free']"
-    "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
+    "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','HEAPU8']"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s WASM=1"
     "SHELL:-s ENVIRONMENT=web,worker"
