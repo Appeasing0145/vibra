@@ -37,9 +37,14 @@ if(ENABLE_PROFILING)
 endif()
 
 option(LIBRARY_ONLY "Build only the library" OFF)
+option(BUILD_JS "Build JavaScript/WebAssembly bindings" OFF)
 include(CTest)
 
 add_subdirectory(lib)
+
+if(BUILD_JS)
+    add_subdirectory(js)
+endif()
 
 if(BUILD_TESTING)
     add_subdirectory(tests)

@@ -17,29 +17,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure CMake
-        run: >
-          emcmake cmake -B ${{ github.workspace }}/build \
-            -DLIBRARY_ONLY=ON \
-            -DBUILD_TESTING=OFF \
-            -DCMAKE_INSTALL_PREFIX=/usr/local
-
-      - name: Build libvibra as WebAssembly Library
-        run: |
-          cd ${{ github.workspace }}/build
-          make
-          sudo make install
-
       - name: Build vibra WebAssembly Module
-        run: |
-          cd ${{ github.workspace }}/bindings/wasm
-          mkdir build
-          emmake make -j8
+        run: ${{ github.workspace }}/js/build-wasm.sh
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: vibra-web-assembly
           path: |
-            bindings/wasm/build/vibra.wasm
-            bindings/wasm/build/vibra.js
+            build-js-wasm/js/vibra.wasm
+            build-js-wasm/js/vibra.js
