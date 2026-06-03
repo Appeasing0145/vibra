@@ -52,7 +52,7 @@
 | ***Python*** | *Coming soon...* | - |
 
 ### Building the WebAssembly Version
-* Please refer to **[bindings/wasm/README.md](bindings/wasm/README.md)** for instructions on building and running the WebAssembly version of vibra.
+* Please refer to **[js/README.md](js/README.md)** for instructions on building and running the JavaScript/WebAssembly version of vibra.
 
 ### Building the Native Version
 
