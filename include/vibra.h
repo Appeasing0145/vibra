@@ -1,19 +1,16 @@
 #ifndef INCLUDE_VIBRA_H_
 #define INCLUDE_VIBRA_H_
 
-#include <string>
-
+#ifdef __cplusplus
 extern "C" {
+#endif
+
 /**
- * @brief Structure to hold a music fingerprint.
+ * @brief Opaque handle for a generated music fingerprint.
  *
- * @note The structure is thread-unsafe and does not require manual memory management
- * for the returned pointer.
+ * @note The returned pointer must be freed with vibra_free_fingerprint().
  */
-struct Fingerprint {
-  std::string uri;        /**< The URI associated with the fingerprint. */
-  unsigned int sample_ms; /**< The sample duration in milliseconds. */
-};
+typedef struct Fingerprint Fingerprint;
 
 /**
  * @brief Generate a fingerprint from a music file.
@@ -81,7 +78,7 @@ Fingerprint* vibra_get_fingerprint_from_float_pcm(const char* raw_pcm,
  *
  * @note The returned pointer should not be freed.
  */
-const char* vibra_get_uri_from_fingerprint(Fingerprint* fingerprint);
+const char* vibra_get_uri_from_fingerprint(const Fingerprint* fingerprint);
 
 /**
  * @brief Get the sample duration in milliseconds from a fingerprint.
@@ -89,7 +86,8 @@ const char* vibra_get_uri_from_fingerprint(Fingerprint* fingerprint);
  * @param fingerprint Pointer to the fingerprint.
  * @return unsigned int The sample duration in milliseconds.
  */
-unsigned int vibra_get_sample_ms_from_fingerprint(Fingerprint* fingerprint);
+unsigned int vibra_get_sample_ms_from_fingerprint(
+    const Fingerprint* fingerprint);
 
 /**
  * @brief Free a fingerprint.
@@ -97,6 +95,9 @@ unsigned int vibra_get_sample_ms_from_fingerprint(Fingerprint* fingerprint);
  * @param fingerprint Pointer to the fingerprint.
  */
 void vibra_free_fingerprint(Fingerprint* fingerprint);
+
+#ifdef __cplusplus
 }  // extern "C"
+#endif
 
 #endif  // INCLUDE_VIBRA_H_

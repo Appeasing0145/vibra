@@ -25,7 +25,9 @@ std::size_t writeCallback(void* contents, size_t size, size_t nmemb,
 }
 
 std::string Shazam::Recognize(const Fingerprint* fingerprint) {
-  auto content = getRequestContent(fingerprint->uri, fingerprint->sample_ms);
+  auto content =
+      getRequestContent(vibra_get_uri_from_fingerprint(fingerprint),
+                        vibra_get_sample_ms_from_fingerprint(fingerprint));
   auto user_agent = getUserAgent();
   std::string url = getShazamHost();
 

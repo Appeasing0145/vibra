@@ -82,7 +82,7 @@ int CLI::Run(int argc, char** argv) {
   }
 
   if (fingerprint_only) {
-    std::cout << fingerprint->uri << std::endl;
+    std::cout << vibra_get_uri_from_fingerprint(fingerprint) << std::endl;
   } else if (recognize) {
     std::cout << Shazam::Recognize(fingerprint) << std::endl;
   }
