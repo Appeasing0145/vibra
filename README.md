@@ -22,7 +22,7 @@
 * It analyzes audio files, generates fingerprints, and queries Shazam's database for song identification.
 * **Key features**:
     * Fast and lightweight, optimized for various platforms, including embedded devices.
-    * Cross-platform support: Linux, Windows, macOS, **WebAssembly**, and **FFI bindings** for other languages.
+    * Cross-platform support: Linux, Windows, macOS, **WebAssembly**, and **Python**.
     * Flexible input processing: native support for WAV files, optional FFmpeg for other formats.
 * **Based on Shazam's algorithm**:
     * [An Industrial-Strength Audio Search Algorithm](https://www.ee.columbia.edu/~dpwe/papers/Wang03-shazam.pdf)
@@ -32,7 +32,8 @@
     * Embedded devices (e.g., Raspberry Pi, Jetson Nano)
     * Desktop and server environments for high-performance recognition
     * WebAssembly for web-based use
-    * Additional support for iOS, Android, and other languages via FFI bindings
+    * Python applications through the ctypes-based Python package
+    * Additional support for iOS, Android, and other languages through the public C ABI
 
 ### Live Demo
 * You can try the music recognition with the **[WebAssembly version of vibra here](https://bayernmuller.github.io/vibra-live-demo/)**
@@ -64,7 +65,6 @@
 * The project is developed using the **C++11** standard.
 * vibra has the following dependencies:
     * [CMake](https://cmake.org/): A cross-platform build system generator.
-    * [KISS FFT](https://github.com/mborgerding/kissfft): Vendored in `third-party/kissfft` for Fast Fourier Transforms.
     * [libcurl](https://curl.se/libcurl/) (CLI tool only): A library for transferring data with URLs.
       * If you don't need CLI tool, libcurl is not required.
       * You can disable it by setting the `-DLIBRARY_ONLY=ON` option in the CMake command.
@@ -100,20 +100,6 @@
     * `make`
     * `sudo make install` (Optional)
       * Installs the libvibra static, shared libraries and the vibra command-line tool.
-
-#### Unit tests
-* Unit tests are built with [GoogleTest](https://github.com/google/googletest), fetched by CMake.
-* Native CI builds release artifacts with `-DBUILD_TESTING=OFF`, then configures a separate test build with `-DBUILD_TESTING=ON`.
-* Run the following commands to build and run unit tests:
-    * `cmake -B build-test -DCMAKE_BUILD_TYPE=Debug -DLIBRARY_ONLY=ON -DBUILD_TESTING=ON`
-    * `cmake --build build-test --target vibra_unit_tests`
-    * `ctest --test-dir build-test --output-on-failure`
-
-#### Code checks
-* Code CI runs `cpplint` and `clang-format`.
-* Run the following commands locally:
-    * `cpplint --recursive lib include tests/algorithm tests/audio tests/utils tests/public_api_test.cpp`
-    * `find include lib tests -path tests/e2e -prune -o \( -name '*.h' -o -name '*.cpp' -o -name '*.cc' -o -name '*.c' \) -print0 | xargs -0 clang-format --dry-run --Werror`
 
 #### Usage
 <details>
@@ -211,6 +197,22 @@ vibra --recognize --file sample.mp3
 
 * I compared the performance of vibra with the [SongRec](https://github.com/marin-m/SongRec/tree/master) rust and python version on the Raspberry Pi 4.
 * vibra is about 2 times faster than the SongRec!
+
+### Contribution
+
+#### Unit tests
+* Unit tests are built with [GoogleTest](https://github.com/google/googletest), fetched by CMake.
+* Native CI builds release artifacts with `-DBUILD_TESTING=OFF`, then configures a separate test build with `-DBUILD_TESTING=ON`.
+* Run the following commands to build and run unit tests:
+    * `cmake -B build-test -DCMAKE_BUILD_TYPE=Debug -DLIBRARY_ONLY=ON -DBUILD_TESTING=ON`
+    * `cmake --build build-test --target vibra_unit_tests`
+    * `ctest --test-dir build-test --output-on-failure`
+
+#### Code checks
+* Code CI runs `cpplint` and `clang-format`.
+* Run the following commands locally:
+    * `cpplint --recursive lib include tests/algorithm tests/audio tests/utils tests/public_api_test.cpp`
+    * `find include lib tests -path tests/e2e -prune -o \( -name '*.h' -o -name '*.cpp' -o -name '*.cc' -o -name '*.c' \) -print0 | xargs -0 clang-format --dry-run --Werror`
 
 ### License
 * vibra is licensed under the GPLv3 license. See [LICENSE](LICENSE) for more details.
