@@ -35,10 +35,10 @@ class FrequencyPeak {
   double ComputeElapsedSeconds() const;
 
  private:
-  std::uint32_t fft_pass_number_;
-  std::uint32_t peak_magnitude_;
-  std::uint32_t corrected_peak_frequency_bin_;
-  std::uint32_t sample_rate_;
+  std::uint32_t fft_pass_number_ = 0;
+  std::uint32_t peak_magnitude_ = 0;
+  std::uint32_t corrected_peak_frequency_bin_ = 0;
+  std::uint32_t sample_rate_ = 0;
 };
 
 }  // namespace vibra

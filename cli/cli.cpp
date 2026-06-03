@@ -60,9 +60,9 @@ int CLI::Run(int argc, char** argv) {
     std::cout << parser;
     return 0;
   } catch (const std::runtime_error& e) {
-    std::cerr << std::endl;
-    std::cerr << e.what() << std::endl;
-    std::cerr << std::endl;
+    std::cerr << '\n';
+    std::cerr << e.what() << '\n';
+    std::cerr << '\n';
     std::cerr << parser;
     return 1;
   }
@@ -77,21 +77,21 @@ int CLI::Run(int argc, char** argv) {
         args::get(chunk_seconds), args::get(sample_rate), args::get(channels),
         args::get(bits_per_sample), is_signed);
   } else {
-    std::cerr << "Invalid arguments" << std::endl;
+    std::cerr << "Invalid arguments" << '\n';
     return 1;
   }
 
   if (fingerprint_only) {
-    std::cout << vibra_get_uri_from_fingerprint(fingerprint) << std::endl;
+    std::cout << vibra_get_uri_from_fingerprint(fingerprint) << '\n';
   } else if (recognize) {
-    std::cout << Shazam::Recognize(fingerprint) << std::endl;
+    std::cout << Shazam::Recognize(fingerprint) << '\n';
   }
   return 0;
 }
 
 Fingerprint* CLI::getFingerprintFromMusicFile(const std::string& music_file) {
   if (std::ifstream(music_file).good() == false) {
-    std::cerr << "File not found: " << music_file << std::endl;
+    std::cerr << "File not found: " << music_file << '\n';
     throw std::ifstream::failure("File not found");
   }
   return vibra_get_fingerprint_from_music_file(music_file.c_str());
@@ -100,16 +100,17 @@ Fingerprint* CLI::getFingerprintFromMusicFile(const std::string& music_file) {
 Fingerprint* CLI::getFingerprintFromStdin(int chunk_seconds, int sample_rate,
                                           int channels, int bits_per_sample,
                                           bool is_signed) {
-  std::size_t bytes =
-      chunk_seconds * sample_rate * channels * (bits_per_sample / 8);
+  std::size_t bytes = static_cast<std::size_t>(chunk_seconds) * sample_rate *
+                      channels * (bits_per_sample / 8);
   std::vector<char> buffer(bytes);
-  std::cin.read(buffer.data(), bytes);
+  std::cin.read(buffer.data(), static_cast<std::streamsize>(bytes));
+  int bytes_int = static_cast<int>(bytes);
   if (is_signed) {
     return vibra_get_fingerprint_from_signed_pcm(
-        buffer.data(), bytes, sample_rate, bits_per_sample, channels);
+        buffer.data(), bytes_int, sample_rate, bits_per_sample, channels);
   }
-  return vibra_get_fingerprint_from_float_pcm(buffer.data(), bytes, sample_rate,
-                                              bits_per_sample, channels);
+  return vibra_get_fingerprint_from_float_pcm(
+      buffer.data(), bytes_int, sample_rate, bits_per_sample, channels);
 }
 
 }  // namespace vibra
