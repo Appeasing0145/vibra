@@ -1,8 +1,43 @@
-import createModule from './vibra.js';
+let vibraRuntimeReadyPromise;
 
-const Module = await createModule();
+function isVibraRuntimeReady() {
+  return typeof Module !== 'undefined' && Module.HEAPU8 && Module._malloc && Module.ccall;
+}
+
+function waitForVibraRuntime() {
+  if (isVibraRuntimeReady()) {
+    return Promise.resolve();
+  }
+
+  if (vibraRuntimeReadyPromise) {
+    return vibraRuntimeReadyPromise;
+  }
+
+  vibraRuntimeReadyPromise = new Promise((resolve, reject) => {
+    if (typeof Module === 'undefined') {
+      reject(new Error('vibra.js did not load'));
+      return;
+    }
+
+    const previousOnRuntimeInitialized = Module.onRuntimeInitialized;
+    const timeout = setTimeout(() => {
+      reject(new Error('vibra wasm did not initialize'));
+    }, 10000);
+
+    Module.onRuntimeInitialized = () => {
+      clearTimeout(timeout);
+      if (typeof previousOnRuntimeInitialized === 'function') {
+        previousOnRuntimeInitialized();
+      }
+      resolve();
+    };
+  });
+
+  return vibraRuntimeReadyPromise;
+}
 
 async function getPcmSignature(rawpcm, pcm_size, sampleRate, sampleWidth, channelCount) {
+  await waitForVibraRuntime();
   const dataPtr = Module._malloc(pcm_size);
   Module.HEAPU8.set(rawpcm, dataPtr);
   const signaturePtr = Module.ccall(
@@ -58,6 +93,15 @@ function recognizeFailed(error) {
   let recognitionTimeout;
   let isRecording = false;
   let stream;
+
+  stopBtn.disabled = true;
+  try {
+    await waitForVibraRuntime();
+    startBtn.disabled = false;
+  } catch (error) {
+    console.log(error);
+    recognizeFailed(error.message);
+  }
 
   startBtn.onclick = async () => {
     // Reset variables before starting a new recording session

@@ -25,7 +25,9 @@ jobs:
         uses: mymindstorm/setup-emsdk@v14
 
       - name: Build WebAssembly module
-        run: ${{ github.workspace }}/js/build-wasm.sh
+        run: |
+          ${{ github.workspace }}/js/build-wasm.sh
+          cmake --build ${{ github.workspace }}/build-js-wasm --target vibra_wasm_global -j
 
       - name: Prepare Pages artifact
         run: |
@@ -33,8 +35,8 @@ jobs:
           mkdir -p pages-site
           cp live-demo/index.html pages-site/index.html
           cp -R live-demo/public pages-site/public
-          cp build-js-wasm/js/vibra.js pages-site/public/vibra.js
-          cp build-js-wasm/js/vibra.wasm pages-site/public/vibra.wasm
+          cp build-js-wasm/js/live-demo/vibra.js pages-site/public/vibra.js
+          cp build-js-wasm/js/live-demo/vibra.wasm pages-site/public/vibra.wasm
           touch pages-site/.nojekyll
 
       - name: Upload Pages artifact
