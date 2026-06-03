@@ -46,7 +46,6 @@
 | **Code Checks** | [![code-main]][code-main] | [ci-code] |
 | **Linux AMD64** | [![linux-amd64-main]][linux-amd64-main] | [ci-linux-amd64] |
 | **Linux ARM64** | [![linux-arm64-main]][linux-arm64-main] | [ci-linux-arm64] |
-| **MacOS AMD64** | [![macos-amd64-main]][macos-amd64-main] | [ci-macos-amd64] |
 | **MacOS ARM64** | [![macos-arm64-main]][macos-arm64-main] | [ci-macos-arm64] |
 | **Windows AMD64** | [![windows-amd64-main]][windows-amd64-main] | [ci-windows-amd64] |
 | **WebAssembly** | [![webassembly-main]][webassembly-main] | [ci-webassembly] |
@@ -227,9 +226,6 @@ vibra --recognize --file sample.mp3
 
 [linux-arm64-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-linux-arm64.yaml/badge.svg
 [ci-linux-arm64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-linux-arm64.yaml
-
-[macos-amd64-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-macos-amd64.yaml/badge.svg
-[ci-macos-amd64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-macos-amd64.yaml
 
 [macos-arm64-main]: https://github.com/bayernmuller/vibra/actions/workflows/ci-macos-arm64.yaml/badge.svg
 [ci-macos-arm64]: https://github.com/bayernmuller/vibra/tree/main/.github/workflows/ci-macos-arm64.yaml
